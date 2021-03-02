@@ -1,35 +1,9 @@
 <html>
 
 <head>
-   
-   <style type="text/css">
-      /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;
-        /* The height is 400 pixels */
-        width: 100%;
-        /* The width is the width of the web page */
-      }
-    </style>
-    <script>
-      // Initialize and add the map
-      function initMap() {
-        // The location of Uluru
-        const uluru = { lat: -25.344, lng: 131.036 };
-        // The map, centered at Uluru
-        const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 4,
-          center: uluru,
-        });
-        // The marker, positioned at Uluru
-        const marker = new google.maps.Marker({
-          position: uluru,
-          map: map,
-        });
-      }
-    </script>
-	
-   
+  <script src="googlemaps.js"></script>
+
+
   </head>
 
   <body>
@@ -39,7 +13,13 @@
     <hr>
 	
 	<h2>Current Location</h2>
-    <div id="map"></div>
+    <div id="map" style="height: 400px; width: 100%;">  </div>
+    <script async defer>
+
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPFDXNH1Ej3As6KbTPb-8Jjg19-DyC7eM&callback=initMap">
+
+
+    </script>
 	<hr>
 
     <h3>Please Upload a picture of your lost pet</h3>
@@ -63,11 +43,8 @@
     </form>
 
 
-    <script>
-	
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPFDXNH1Ej3As6KbTPb-8Jjg19-DyC7eM&callback=initMap&libraries=&v=weekly"
-    async
 
+    <script>
     /*
       Function to carry out the actual PUT request to S3 using the signed request from the app.
     */

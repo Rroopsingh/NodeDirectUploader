@@ -1,31 +1,115 @@
 <html>
+
+<head>
+   
+    <style type="text/css">
+	  #map {
+		height: 400px;
+		width: 100%;
+	  }
+	  
+	.custom-map-control-button {
+		  appearance: button;
+		  background-color: #fff;
+		  border: 0;
+		  border-radius: 2px;
+		  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+		  cursor: pointer;
+		  margin: 10px;
+		  padding: 0 0.5em;
+		  height: 40px;
+		  font: 400 18px Roboto, Arial, sans-serif;
+		  overflow: hidden;
+	}
+	.custom-map-control-button:hover {
+		  background: #ebebeb;
+	}
+    </style>
+	
+    <script>
+	  let map, infoWindow;
+      function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: -34.397, lng: 150.644 },
+    zoom: 6,
+  });
+  infoWindow = new google.maps.InfoWindow();
+  const locationButton = document.createElement("button");
+  locationButton.textContent = "Pan to Current Location";
+  locationButton.classList.add("custom-map-control-button");
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+  locationButton.addEventListener("click", () => {
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          infoWindow.setPosition(pos);
+          infoWindow.setContent("Location found.");
+          infoWindow.open(map);
+          map.setCenter(pos);
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+  });
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(
+    browserHasGeolocation
+      ? "Error: The Geolocation service failed."
+      : "Error: Your browser doesn't support geolocation."
+  );
+  infoWindow.open(map);
+}
+    </script>
+  </head>
+
   <body>
 
-    <h1>Edit your account</h1>
+    <h1>Welcome to Randell's SOFE4630 Assignment 2: Lost pet Board</h1>
 
     <hr>
+	
+	<h2>Current Location</h2>
+    <div id="map"></div>
+	<hr>
 
-    <h2>Your avatar</h2>
+    <h3>Please Upload a picture of your lost pet</h3>
 
     <input type="file" id="file-input">
-    <p id="status">Please select a file</p>
+    <p id="status">Please select an image of your pet</p>
     <img style="border:1px solid gray;width:300px;"  id="preview" src="/images/default.png">
 
-    <h2>Your information</h2>
+    <h3>Your information</h3>
 
     <form method="POST" action="/save-details">
       <input type="hidden" id="avatar-url" name="avatar-url" value="/images/default.png">
-      <input type="text" name="username" placeholder="Username"><br>
-      <input type="text" name="full-name" placeholder="Full name"><br><br>
+      <input type="text" name="username" placeholder="Pet Name"><br>
+	  <input type="text" name="emailAdd" placeholder="Contact Email"><br><br>
+      <input type="text" name="full-name" placeholder="Contact Number"><br><br>
 
       <hr>
-      <h2>Save changes</h2>
+      <h3>Save changes</h3>
 
       <input type="submit" value="Update profile">
     </form>
 
 
     <script>
+	
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPFDXNH1Ej3As6KbTPb-8Jjg19-DyC7eM&callback=initMap&libraries=&v=weekly"
+    async
 
     /*
       Function to carry out the actual PUT request to S3 using the signed request from the app.
